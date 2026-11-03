@@ -3,6 +3,7 @@ Dados: API SGS do Banco Central (séries 433 = IPCA mensal, 432 = meta da Selic)
 """
 
 from datetime import date
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -122,7 +123,9 @@ ganho = tabela.iloc[0]["Ganho vs. ingênuo (%)"]
 c4.metric("Ganho vs. ingênuo", f"{fmt(ganho, 1)}%",
           help="Redução percentual do erro (MAE) em relação a repetir o último valor.")
 
-aba_graf, aba_met, aba_prev = st.tabs(["📈 Previsão", "🏁 Comparação de modelos", "🗂️ Tabela"])
+aba_graf, aba_met, aba_prev, aba_cod = st.tabs(
+    ["📈 Previsão", "🏁 Comparação de modelos", "🗂️ Tabela", "💻 Código dos modelos"]
+)
 
 with aba_graf:
     historico = y.iloc[-48:]
@@ -167,6 +170,10 @@ with aba_prev:
     st.dataframe(saida.round(3), use_container_width=True, hide_index=True)
     st.download_button("⬇️ Baixar CSV", saida.to_csv(index=False).encode("utf-8"),
                        file_name="previsoes.csv", mime="text/csv")
+
+with aba_cod:
+    st.caption("Modelos e backtest usados neste app (arquivo modelos.py).")
+    st.code((Path(__file__).parent / "modelos.py").read_text(encoding="utf-8"), language="python")
 
 st.divider()
 st.caption("Projeto educacional: não é recomendação de investimento. Fonte: Banco Central do Brasil (API SGS).")
