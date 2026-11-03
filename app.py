@@ -177,3 +177,5 @@ with aba_cod:
 
 st.divider()
 st.caption("Projeto educacional: não é recomendação de investimento. Fonte: Banco Central do Brasil (API SGS).")
+
+
